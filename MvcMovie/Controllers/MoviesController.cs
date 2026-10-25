@@ -84,9 +84,10 @@ public class MoviesController(MvcMovieContext context) : Controller
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var movie = await context.Movie.FindAsync(id);
-        if (movie != null) context.Movie.Remove(movie);
+        if (movie is null) return NotFound();
+        context.Movie.Remove(movie);
         await context.SaveChangesAsync();
-        TempData["Success"] = "Movie deleted successfully.";
+        TempData["Success"] = $"Deleted '{movie.Title}'.";
         return RedirectToAction(nameof(Index));
     }
 }
