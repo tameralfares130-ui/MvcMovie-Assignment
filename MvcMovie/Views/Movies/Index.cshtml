@@ -1,0 +1,26 @@
+@model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "Movies";
+}
+<div class="page-heading">
+    <div><h1>Movie collection</h1><p class="subtitle">Manage movies with ASP.NET Core MVC and SQL Server.</p></div>
+    <a class="btn btn-primary" asp-action="Create">+ Add movie</a>
+</div>
+<div class="table-wrap">
+    <table>
+        <thead><tr><th>Title</th><th>Release date</th><th>Genre</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><strong>@item.Title</strong></td>
+                <td>@item.ReleaseDate.ToString("dd MMM yyyy")</td>
+                <td>@item.Genre</td>
+                <td>@item.Price.ToString("0.00")</td>
+                <td><div class="actions"><a asp-action="Details" asp-route-id="@item.Id">Details</a><a asp-action="Edit" asp-route-id="@item.Id">Edit</a><a class="danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></div></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (!Model.Any()) { <div class="empty">No movies yet. Add your first movie!</div> }
+</div>

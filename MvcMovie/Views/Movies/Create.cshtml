@@ -1,0 +1,15 @@
+@model Movie
+@{
+    ViewData["Title"] = "Add Movie";
+}
+<div class="page-heading"><div><h1>Add a movie</h1><p class="subtitle">Create a movie record in SQL Server.</p></div></div>
+<div class="panel form-card">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="field"><label asp-for="Title"></label><input asp-for="Title" /><span asp-validation-for="Title" class="text-danger"></span></div>
+        <div class="field"><label asp-for="ReleaseDate"></label><input asp-for="ReleaseDate" /><span asp-validation-for="ReleaseDate" class="text-danger"></span></div>
+        <div class="field"><label asp-for="Genre"></label><input asp-for="Genre" /><span asp-validation-for="Genre" class="text-danger"></span></div>
+        <div class="field"><label asp-for="Price"></label><input asp-for="Price" type="number" step="0.01" /><span asp-validation-for="Price" class="text-danger"></span></div>
+        <div class="form-actions"><button type="submit" class="btn btn-primary">Save movie</button><a asp-action="Index">Cancel</a></div>
+    </form>
+</div>

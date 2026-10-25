@@ -1,0 +1,14 @@
+@model Movie
+@{
+    ViewData["Title"] = "Delete Movie";
+}
+<h1>Delete movie?</h1>
+<p>This action permanently removes the record.</p>
+<div class="panel form-card">
+    <h2>@Model.Title</h2>
+    <p>@Model.Genre · @Model.ReleaseDate.ToString("yyyy") · @Model.Price.ToString("0.00")</p>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-actions"><button type="submit" class="btn btn-danger">Delete movie</button><a asp-action="Index">Cancel</a></div>
+    </form>
+</div>
