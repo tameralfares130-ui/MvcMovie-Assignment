@@ -6,12 +6,14 @@ using MvcMovie.Models;
 namespace MvcMovie.Controllers;
 public class MoviesController(MvcMovieContext context) : Controller
 {
-    public async Task<IActionResult> Index() => View(await context.Movie.ToListAsync());
+    // All movie operations use the injected EF Core context.
+    public async Task<IActionResult> Index() =>
+        View(await context.Movie.AsNoTracking().OrderBy(m => m.Title).ToListAsync());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id is null) return NotFound();
-        var movie = await context.Movie.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await context.Movie.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
         return movie is null ? NotFound() : View(movie);
     }
 
@@ -23,6 +25,7 @@ public class MoviesController(MvcMovieContext context) : Controller
         if (!ModelState.IsValid) return View(movie);
         context.Add(movie);
         await context.SaveChangesAsync();
+        TempData["Success"] = "Movie created successfully.";
         return RedirectToAction(nameof(Index));
     }
 
@@ -38,15 +41,24 @@ public class MoviesController(MvcMovieContext context) : Controller
     {
         if (id != movie.Id) return NotFound();
         if (!ModelState.IsValid) return View(movie);
-        context.Update(movie);
-        await context.SaveChangesAsync();
+        try
+        {
+            context.Update(movie);
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await context.Movie.AnyAsync(m => m.Id == id)) return NotFound();
+            throw;
+        }
+        TempData["Success"] = "Movie updated successfully.";
         return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id is null) return NotFound();
-        var movie = await context.Movie.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await context.Movie.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
         return movie is null ? NotFound() : View(movie);
     }
 
@@ -56,6 +68,7 @@ public class MoviesController(MvcMovieContext context) : Controller
         var movie = await context.Movie.FindAsync(id);
         if (movie != null) context.Movie.Remove(movie);
         await context.SaveChangesAsync();
+        TempData["Success"] = "Movie deleted successfully.";
         return RedirectToAction(nameof(Index));
     }
 }
