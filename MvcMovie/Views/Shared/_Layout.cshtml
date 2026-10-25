@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · MVC Movie Library</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" asp-controller="Home" asp-action="Index"><span class="brand-icon">▶</span> Movie<span>Library</span></a>
+            <nav aria-label="Main navigation">
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Movies" asp-action="Index">Movies</a>
+                <a asp-controller="HelloWorld" asp-action="Index">MVC Demo</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container page">
+        @if (TempData["Success"] is string message)
+        {
+            <div class="alert-success" role="status">@message</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="site-footer"><div class="container">ASP.NET Core MVC tutorial project · Software Engineering · .NET 10</div></footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
