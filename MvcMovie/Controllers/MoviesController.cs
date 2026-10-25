@@ -7,8 +7,26 @@ namespace MvcMovie.Controllers;
 public class MoviesController(MvcMovieContext context) : Controller
 {
     // All movie operations use the injected EF Core context.
-    public async Task<IActionResult> Index() =>
-        View(await context.Movie.AsNoTracking().OrderBy(m => m.Title).ToListAsync());
+    public async Task<IActionResult> Index(string? movieGenre, string? searchString)
+    {
+        IQueryable<string> genreQuery = context.Movie
+            .Select(m => m.Genre).Distinct().OrderBy(g => g);
+
+        var movies = context.Movie.AsNoTracking().AsQueryable();
+        if (!string.IsNullOrWhiteSpace(searchString))
+            movies = movies.Where(m => m.Title.Contains(searchString));
+        if (!string.IsNullOrWhiteSpace(movieGenre))
+            movies = movies.Where(m => m.Genre == movieGenre);
+
+        var viewModel = new MovieGenreViewModel
+        {
+            Movies = await movies.OrderBy(m => m.Title).ToListAsync(),
+            Genres = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(await genreQuery.ToListAsync()),
+            MovieGenre = movieGenre,
+            SearchString = searchString
+        };
+        return View(viewModel);
+    }
 
     public async Task<IActionResult> Details(int? id)
     {

@@ -1,4 +1,4 @@
-@model IEnumerable<Movie>
+@model MovieGenreViewModel
 @{
     ViewData["Title"] = "Movies";
 }
@@ -6,21 +6,27 @@
     <div><h1>Movie collection</h1><p class="subtitle">Manage movies with ASP.NET Core MVC and SQL Server.</p></div>
     <a class="btn btn-primary" asp-action="Create">+ Add movie</a>
 </div>
+<form asp-controller="Movies" asp-action="Index" method="get" class="filter">
+    <div class="field"><label for="SearchString">Movie title</label><input id="SearchString" name="SearchString" value="@Model.SearchString" placeholder="Search by title" /></div>
+    <div class="field"><label for="MovieGenre">Genre</label><select id="MovieGenre" name="MovieGenre" asp-items="Model.Genres"><option value="">All genres</option></select></div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a class="btn" asp-action="Index">Clear</a>
+</form>
 <div class="table-wrap">
     <table>
         <thead><tr><th>Title</th><th>Release date</th><th>Genre</th><th>Price</th><th>Actions</th></tr></thead>
         <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Movies)
         {
             <tr>
                 <td><strong>@item.Title</strong></td>
                 <td>@item.ReleaseDate.ToString("dd MMM yyyy")</td>
-                <td>@item.Genre</td>
+                <td><span class="badge">@item.Genre</span></td>
                 <td>@item.Price.ToString("0.00")</td>
                 <td><div class="actions"><a asp-action="Details" asp-route-id="@item.Id">Details</a><a asp-action="Edit" asp-route-id="@item.Id">Edit</a><a class="danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></div></td>
             </tr>
         }
         </tbody>
     </table>
-    @if (!Model.Any()) { <div class="empty">No movies yet. Add your first movie!</div> }
+    @if (!Model.Movies.Any()) { <div class="empty">No movies found. Try another search or add a new movie!</div> }
 </div>
