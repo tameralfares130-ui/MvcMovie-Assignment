@@ -1,0 +1,8 @@
+@{
+    ViewData["Title"] = "Welcome";
+}
+<h1>@ViewData["Message"]</h1>
+@for (int i = 0; i < (int)ViewData["NumTimes"]!; i++)
+{
+    <p>Welcome to ASP.NET Core MVC!</p>
+}

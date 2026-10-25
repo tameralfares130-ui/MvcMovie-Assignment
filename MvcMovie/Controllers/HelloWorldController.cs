@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 namespace MvcMovie.Controllers;
 
-// Demonstrates the controller part of MVC.
+// Demonstrates the connection between controller actions and Razor views.
 public class HelloWorldController : Controller
 {
-    public string Index() => "Hello from the MVC controller!";
-    public string Welcome(string name = "Student", int numTimes = 1) =>
-        $"Hello {name}; number of greetings: {numTimes}";
+    public IActionResult Index() => View();
+    public IActionResult Welcome(string name = "Student", int numTimes = 1)
+    {
+        ViewData["Message"] = $"Hello, {name}!";
+        ViewData["NumTimes"] = Math.Clamp(numTimes, 1, 20);
+        return View();
+    }
 }
