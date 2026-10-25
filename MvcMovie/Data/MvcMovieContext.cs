@@ -12,6 +12,7 @@ public class MvcMovieContext(DbContextOptions<MvcMovieContext> options) : DbCont
             entity.Property(m => m.Title).HasMaxLength(60).IsRequired();
             entity.Property(m => m.Genre).HasMaxLength(30).IsRequired();
             entity.Property(m => m.Price).HasColumnType("decimal(18,2)");
+            entity.Property(m => m.Rating).HasMaxLength(5);
         });
     }
 }

@@ -38,7 +38,7 @@ public class MoviesController(MvcMovieContext context) : Controller
     public IActionResult Create() => View();
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Title,ReleaseDate,Genre,Price")] Movie movie)
+    public async Task<IActionResult> Create([Bind("Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
     {
         if (!ModelState.IsValid) return View(movie);
         context.Add(movie);
@@ -55,7 +55,7 @@ public class MoviesController(MvcMovieContext context) : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
     {
         if (id != movie.Id) return NotFound();
         if (!ModelState.IsValid) return View(movie);

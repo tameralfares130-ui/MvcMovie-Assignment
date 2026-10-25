@@ -14,7 +14,7 @@
 </form>
 <div class="table-wrap">
     <table>
-        <thead><tr><th>Title</th><th>Release date</th><th>Genre</th><th>Price</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Title</th><th>Release date</th><th>Genre</th><th>Price</th><th>Rating</th><th>Actions</th></tr></thead>
         <tbody>
         @foreach (var item in Model.Movies)
         {
@@ -23,6 +23,7 @@
                 <td>@item.ReleaseDate.ToString("dd MMM yyyy")</td>
                 <td><span class="badge">@item.Genre</span></td>
                 <td>@item.Price.ToString("0.00")</td>
+                <td>@(item.Rating ?? "—")</td>
                 <td><div class="actions"><a asp-action="Details" asp-route-id="@item.Id">Details</a><a asp-action="Edit" asp-route-id="@item.Id">Edit</a><a class="danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a></div></td>
             </tr>
         }

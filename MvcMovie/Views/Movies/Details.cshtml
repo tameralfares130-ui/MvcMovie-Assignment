@@ -8,6 +8,7 @@
         <dt>Title</dt><dd>@Model.Title</dd>
         <dt>Release date</dt><dd>@Model.ReleaseDate.ToString("dd MMMM yyyy")</dd>
         <dt>Genre</dt><dd>@Model.Genre</dd>
+        <dt>Rating</dt><dd>@(Model.Rating ?? "Not rated")</dd>
         <dt>Price</dt><dd>@Model.Price.ToString("0.00")</dd>
     </dl>
     <div class="form-actions"><a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit movie</a><a asp-action="Index">Back to list</a></div>
